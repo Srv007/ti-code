@@ -981,6 +981,74 @@ backlight_settings:
   }
 }
 
+int automatic_bacllight_setting(void){
+  boolean automatic_bacllight_setting=true;
+  print_menu("AUTOMATIC BACKLIGHT:","1-OFF","2-ON","");
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print("OK"); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print(" "); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.print("CANCEL"); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+automatic_bacllight_setting: 
+  if(automatic_lock_status==true) get_lock_time();
+  if(automatic_bacllight_setting==true){
+    lcd.setCursor(19,2);
+    lcd.print(" ");
+    lcd.setCursor(19,1);
+    lcd.write(3);
+  }
+  else{
+    lcd.setCursor(19,1);
+    lcd.print(" ");
+    lcd.setCursor(19,2);
+    lcd.write(3);
+  }
+  a=key();
+  switch(a){
+  case 'A':
+    automatic_bacllight_setting=true;
+    goto automatic_bacllight_setting;
+
+  case 'B':
+    automatic_bacllight_setting=false;
+    goto automatic_bacllight_setting;
+
+  case 'C':
+    lcd.clear();
+    switch(automatic_bacllight_setting){
+    case true:
+      print_menu("AUTOMATIC BACKLIGHT:","AUTOMATIC BACKLIGHT:OFF","","");
+      backlight_status=false;
+      break;
+
+    case false:
+      print_menu("AUTOMATIC BACKLIGHT:","AUTOMATIC BACKLIGHT:ON","","");
+      backlight_status=true;
+      break;
+    }
+    delay(1000);
+    break;
+
+  case 'D':
+    backlight_settings();
+    break;
+
+  default:
+    goto automatic_bacllight_setting;
+  }
+  loop();
+}  
+
 
 
 void setup(){
