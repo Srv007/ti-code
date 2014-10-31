@@ -360,6 +360,9 @@ int device_lock(void){
   case '1':
     lcd.clear();
     lcd.setCursor(0,0);
+    lcd.print("ENTER PASSWORD:");
+    lcd.setCursor(0, 1);
+    lcd.print("       ");
     lcd.setCursor(0, 1);
     lcd.blink();
     for  (i=0;i<4;i++){
@@ -375,6 +378,10 @@ int device_lock(void){
       TwoMsTimer::start();
     }
     else{
+      lcd.print("WORNG");
+      delay(1000);
+      digitalWrite(vibraton_pin,LOW);
+      device_lock();
       break;
     }
     break;
