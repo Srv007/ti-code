@@ -1579,6 +1579,79 @@ void function2(void){
   }
   loop();
 }
+void display_pnr_history(void){
+  if(automatic_lock_status==true) get_lock_time();
+  delay(200);
+  j=0;
+  print_menu("Press A=NEXT","Press B=Back","Press D=Cancel","");
+  delay(2000);
+out:;
+  lcd.clear();
+  if(j<0) j=0;
+  for(i=0;i<4;i++){
+    lcd.setCursor(0,i);
+    for(k=0;k<20;k++){
+      lcd.print(pnrdata[i+j*4][0][k]);
+    }
+  }
+  a=key();
+  if(a=='A'){
+    j++;
+    goto out;
+  }
+  if(a=='B'){
+    j--;
+    goto out;
+  }
+
+  switch(a){
+  case '1':
+    for(i=0;i<4;i++){
+      lcd.setCursor(0,i);
+      for(k=0;k<20;k++){
+        lcd.print(pnrdata[0+j*4][i][k]);
+      }
+    }
+    w=key();
+    break;
+
+  case '2':
+    for(i=0;i<4;i++){
+      lcd.setCursor(0,i);
+      for(k=0;k<20;k++){
+        lcd.print(pnrdata[1+j*4][i][k]);
+      }
+    }
+    w=key();
+    break;
+
+  case '3':
+    for(i=0;i<4;i++){
+      for(k=0;k<20;k++){
+        lcd.print(pnrdata[2+j*4][i][k]);
+      }
+    }
+    w=key();
+    break;
+
+  case '4':
+    for(i=0;i<4;i++){
+      lcd.setCursor(0,i);
+      for(k=0;k<20;k++){
+        lcd.print(pnrdata[3+j*4][i][k]);
+      }
+    }
+    w=key();
+    break; 
+
+  case 'D':
+    break;
+
+  default:
+    goto out;
+  }
+}
+
 
 
 void setup(){
