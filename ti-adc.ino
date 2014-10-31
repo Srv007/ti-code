@@ -1828,6 +1828,26 @@ main_menu:
     x=i+1;
     y=i+2;
   }
+  print_menu(menu[w],menu[x],menu[y],"");
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print("OK"); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print(" "); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.print("CANCEL"); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+  lcd.setCursor(19,0);
+  lcd.write(3); 
+  if(automatic_lock_status==true) get_lock_time();
+  a = key();
 
  
 }
