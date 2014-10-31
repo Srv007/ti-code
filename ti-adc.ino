@@ -1108,7 +1108,82 @@ void manual_backlight_setting(void){
     }
   }
 }
+void automatic_lock_settings(){
+  if(automatic_lock_status==true) get_lock_time();
+  boolean automatic_lock_settings=true;
+  print_menu("AUTOMATIC LOCK:","1-OFF","2-ON","");
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print("OK"); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print(" "); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.print("CANCEL"); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+automatic_lock_settings: 
+  if(automatic_lock_status==true) get_lock_time();
+  if(automatic_lock_settings==true){
+    lcd.setCursor(19,2);
+    lcd.print(" ");
+    lcd.setCursor(19,1);
+    lcd.write(3);
+  }
+  else{
+    lcd.setCursor(19,1);
+    lcd.print(" ");
+    lcd.setCursor(19,2);
+    lcd.write(3);
+  }
+  a=key();
+  switch(a){
+  case 'A':
+    automatic_lock_settings=true;
+    goto automatic_lock_settings;
 
+  case 'B':
+    automatic_lock_settings=false;
+    goto automatic_lock_settings;
+
+  case 'C':
+    lcd.clear();
+    switch(automatic_lock_settings){
+    case true:
+      lcd.clear();
+      lcd.print("AUTOMATIC LOCK:OFF");
+      automatic_lock_status=false;
+      break;
+
+    case false:
+      lcd.clear();
+      lcd.print("ENTER MIN:");
+      x= keypress_int();
+      lcd.print(x);
+      y= keypress_int();
+      lcd.print(y);
+      locktime=x*10+y;
+      delay(300);
+      automatic_lock_status=true;
+      break;
+    }
+    delay(1000);
+    break;
+
+  case 'D':
+    settings();
+    break;
+
+  default:
+    goto automatic_lock_settings;
+  }
+  loop();
+}
 
 
 void setup(){
