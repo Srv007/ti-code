@@ -430,6 +430,23 @@ void send_cmd(String cmd,char *response,int wait){
   }
   if(Serial1.find(response)) lcd.print("*");
 }
+  Serial1.setTimeout(wait); 
+  while(1){
+    if(Serial1.available())  break;
+  }
+  if(Serial1.find(response)) lcd.print("*");
+}
+
+void CIICR(void){
+  delay(100);
+  Serial1.setTimeout(5000);
+  Serial1.println("AT+CIFSR");
+  if(Serial1.find("ERROR")){
+    send_cmd("AT+CIICR","OK",1000); 
+    CIICR();
+  }
+}
+
 
 void setup(){
   backlight_status=true;
