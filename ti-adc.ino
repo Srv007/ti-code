@@ -1759,6 +1759,15 @@ void get_tte_number(){
 }
 
 void setup(){
+lcd.begin( 20, 4);
+  lcd.clear();
+  for(i=0;i<40;i++){
+    for(j=0;j<4;j++){
+      for(k=0;k<20;k++){
+        pnrdata[i][j][k]='\0';
+      }
+    }
+  }
   backlight_status=true;
   pinMode( button1, INPUT_PULLUP); 
   pinMode( button2, INPUT_PULLUP); 
@@ -1791,9 +1800,7 @@ void setup(){
   key();
   lcd.createChar(2, black);
   lcd.createChar(3, arrow);
-  backlight_status==true;
-  
-  
+  backlight_status==true;  
 }
 void loop(){
  
