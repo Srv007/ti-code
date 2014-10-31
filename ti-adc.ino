@@ -81,6 +81,14 @@ int locktime;
 char a;
 int i,j,k,t,w,x,y;
 float temp;
+char menu[][20]={
+  "1-PNR QUERY",
+  "2-CURR. ASSIGNMENT",
+  "3-SETTINGS",
+  "4-TTE LOGOUT",
+  "5-MENU_5",
+  "6-MENU_6"
+};
 
 
 
