@@ -139,7 +139,35 @@ void automatic_bacllight(void){
     }
   }
 } //end of automatic
-s
+//return button press on keypad in integer
+int keypress_int() {
+  int keypress;
+  for (int x=0; x<4; x++)  {
+    digitalWrite(column[x], HIGH);
+  }
+  keypress='z';
+  while (1)  {
+    for (int x=0; x<4; x++)  {
+      digitalWrite(column[x], LOW);
+      for (int y=0; y<4; y++) {
+        if (!(digitalRead(row[y]))) {
+          digitalWrite(vibraton_pin,LOW);
+          keypress =Keypad_int[x] [y];
+          while(!(digitalRead(row[y])));
+          if(keypress!='z') goto out;
+        }
+      }
+      digitalWrite(column[x], HIGH);
+      if(keypress!='z') break;
+    }
+out:;
+    if(keypress!='z') break;
+  }
+  delay(10);
+  digitalWrite(vibraton_pin,LOW);
+  return keypress;
+}
+
 
 
 void setup(){
