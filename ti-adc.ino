@@ -1651,6 +1651,39 @@ out:;
     goto out;
   }
 }
+void display_tte_history(void){
+  if(automatic_lock_status==true) get_lock_time();
+  delay(200);
+  j=0;
+  print_menu("Press A=UP","Press B=DOWN","Press D=Cancel","");
+  delay(2000);
+out:;
+  lcd.clear();
+  if(j<0) j=0;
+  if(j>10) j=9;
+  for(i=0;i<4;i++){
+    lcd.setCursor(0,i);
+    lcd.print(ttedata[i+j*4]);
+  }
+  a=key();
+  if(a=='A'){
+    j++;
+    goto out;
+  }
+  if(a=='B'){
+    j--;
+    goto out;
+  }
+
+  switch(a){
+
+  case 'D':
+    break;
+
+  default:
+    goto out;
+  }
+}
 
 
 
