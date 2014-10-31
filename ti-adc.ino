@@ -821,6 +821,102 @@ void smart_card_number(){
 void ticketanalysis(void){
   //query_post(posturl,ticketanalysisurl_statement,"station=");
 }
+void settings(void){
+  i=0;
+  char setting_menu[][20]={
+    "1-BACKLIGHT","2-AUTOMATIC LOCK","3-VIBRATION","4-Time","menu5","menu6"            };
+setting_menu:
+  Serial1.flush();
+  if(i<0) i=5;
+  if(i<4){
+    w=i;
+    x=i+1;
+    y=i+2;
+  }
+  if(i==4){
+    w=i;
+    x=i+1;
+    y=5-5;
+  }
+  if(i==5){
+    w=i;
+    x=5-5;
+    y=5-4;
+  }
+  if(i==6){ 
+    i=0;
+    w=i;
+    x=i+1;
+    y=i+2;
+  }
+
+  print_menu(setting_menu[w],setting_menu[x],setting_menu[y],"");
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print("OK"); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print(" "); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.print("CANCEL"); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+  lcd.setCursor(19,0);
+  lcd.write(3); 
+  if(automatic_lock_status==true) get_lock_time();
+  char menu;
+  menu =key();
+  switch(menu){
+  case 'C':
+    switch(i+1){  
+    case 1:
+      backlight_settings();
+      break;
+
+    case 2:
+      automatic_lock_settings(); 
+      break;
+
+    case 3:
+      vibration_settings(); 
+      break;
+
+    case 4: 
+      time_settings();
+      break;
+
+    case 5:
+      break;
+
+    case 6:
+      break;
+    }
+
+  case 'A':
+    i=i-1;  
+    goto setting_menu;
+    break;
+
+  case 'B':
+    i=i+1;
+    goto setting_menu;
+    break;
+
+  case 'D':
+    loop();
+    break;
+
+
+  default:
+    goto setting_menu;
+  }
+  return;
+}
 
 
 void setup(){
