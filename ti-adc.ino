@@ -746,6 +746,69 @@ void print_menu(char *line1,char *line2,char *line3,char *line4){
   lcd.setCursor(0,3);
   lcd.print(line4);
 }
+void pnr_query(void){
+  Serial1.flush();
+  boolean pnr_query=true;
+  String ticket =String(40);
+  print_menu("PNR QUERY:","1-SMART CRAD","2-MANUAL","");//saurav
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print("OK"); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print(" "); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.print("CANCEL"); 
+  lcd.write(2); 
+  lcd.write(2);
+pnr_query: 
+  if(automatic_lock_status==true) get_lock_time();
+  if(pnr_query==true){
+    lcd.setCursor(19,2);
+    lcd.print(" ");
+    lcd.setCursor(19,1);
+    lcd.write(3);
+  }
+  else{
+    lcd.setCursor(19,1);
+    lcd.print(" ");
+    lcd.setCursor(19,2);
+    lcd.write(3);
+  }
+  a=key();
+  switch(a){
+  case 'A':
+    pnr_query=true;
+    goto pnr_query;
+
+  case 'B':
+    pnr_query=false;
+    goto pnr_query;
+
+  case 'C':
+    switch(pnr_query){
+    case true:
+      query_smart_post(posturl,"SWIPE SMART CARD","pnr_code=","pnr_verification","103");
+      break;
+
+    case false:
+      query_post(posturl,pnrurl_statement,"pnr_code=","pnr_verification","101");
+      break;
+    }
+    break;
+
+  case 'D':
+    loop();
+    break;
+
+  default:
+    goto pnr_query;
+  }
+}
 
 void setup(){
   backlight_status=true;
