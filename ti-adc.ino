@@ -351,68 +351,6 @@ int device_lock(void){
   analogWrite(P1_4,0);
   while(digitalRead(lock_button)==HIGH);
   lcd.clear();
-  backlight_status=temp_backlight_status;
-  analogWrite(P1_4,244);
-  print_menu("        LOCK    ","1-Manual","2-ID CARD","");
-  delay(500);
-  a=keylock();
-  switch(a){
-  case '1':
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("ENTER PASSWORD:");
-    lcd.setCursor(0, 1);
-    lcd.print("       ");
-    lcd.setCursor(0, 1);
-    lcd.blink();
-    for  (i=0;i<4;i++){
-      a = keylock();
-      lcd.print("*");
-      user_enter_password.concat(a);	
-    }
-    lcd.noBlink();
-    lcd.setCursor(0, 1);
-    digitalWrite(vibraton_pin,LOW);
-    if ((password.compareTo(user_enter_password))==0){
-      lcd.print("TRUE ");
-      TwoMsTimer::start();
-    }
-    else{
-      lcd.print("WORNG");
-      delay(1000);
-      digitalWrite(vibraton_pin,LOW);
-      device_lock();
-      break;
-    }
-    break;
-
-  case '2':
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Swipe Your Card:");
-    code=smart_card();
-    lcd.setCursor(0,1);
-    lcd.print(code);
-    lcd.setCursor(0,1);
-    lcd.print("********");
-    if ((id_card.compareTo(code))==0){
-      lcd.print("TRUE ");
-    }
-    else{
-      lcd.print("WORNG");
-      delay(1000);
-      digitalWrite(vibraton_pin,LOW);
-      device_lock();
-      break;
-    }
-    break;
-
-  default:
-    device_lock();
-    break;
-  }
-  lcd.clear();
-  digitalWrite(vibraton_pin,LOW);
   lcd.noBlink();
   loop();
   return 0;
