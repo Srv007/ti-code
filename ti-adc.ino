@@ -311,15 +311,7 @@ int main_lock(void){
     lcd.setCursor(0,0);
     lcd.print("Swipe Your Card:");
     code=smart_card();
-    lcd.setCursor(0,1);
-    lcd.print(code);
-    lcd.setCursor(0,1);
-    lcd.print("********");
-    if ((id_card.compareTo(code))==0){
-      lcd.print("TRUE ");
-    }
-    else{
-      lcd.print("WORNG");
+     lcd.print("WORNG");
       delay(1000);
       digitalWrite(vibraton_pin,LOW);
       main_lock();
