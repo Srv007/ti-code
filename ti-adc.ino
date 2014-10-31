@@ -1744,7 +1744,19 @@ void connect(){
   return;
 }
 
-
+void get_tte_number(){
+  lcd.print("SWIPE YOUR CARD:");
+  lcd.setCursor(0,1);
+  i=0;
+  while(i<12){
+    if(rfid.available()){
+      tte_code[i] = rfid.read();
+      lcd.print(tte_code[i]);
+      i++; 
+    }	
+  }
+  return;
+}
 
 void setup(){
   backlight_status=true;
