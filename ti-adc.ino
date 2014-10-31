@@ -167,7 +167,32 @@ out:;
   digitalWrite(vibraton_pin,LOW);
   return keypress;
 }
-
+char keypress() {
+  char keypress;
+  for (x=0; x<4; x++)  {
+    digitalWrite(column[x], HIGH);
+  }
+  keypress='z';
+  while (1)  {
+    for (x=0; x<4; x++)  {
+      digitalWrite(column[x], LOW);
+      for (y=0; y<4; y++) {
+        if (!(digitalRead(row[y]))) {
+          digitalWrite(vibraton_pin,LOW);
+          keypress =Keypad[x] [y];
+          if(keypress!='z') goto out;
+        }
+      }
+      digitalWrite(column[x], HIGH);
+      if(keypress!='z') break;
+    }
+out:;
+    if(keypress!='z') break;
+  }//end while(1)
+  delay(10);
+  digitalWrite(vibraton_pin,LOW);
+  return keypress;
+}//  end of keypress_int()
 
 
 void setup(){
