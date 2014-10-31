@@ -468,7 +468,7 @@ void CIPSTART(String host)
     lcd.print("NOT CONNECTED");
     CIPSTART(host);
   }
-}
+}//
 
 void setup(){
   backlight_status=true;
