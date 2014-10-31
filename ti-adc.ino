@@ -457,6 +457,17 @@ void CIPSTART(String host)
   while(1){
     if(Serial1.available()) break;
   }
+  if((Serial1.find("CONNECT OK"))) lcd.print("Connected");
+  else{
+    if(t>3){
+      send_cmd("AT+CIPCLOSE","CLOSE OK",5000);
+      loop();
+    }
+    t++;
+    lcd.clear();
+    lcd.print("NOT CONNECTED");
+    CIPSTART(host);
+  }
 }
 
 void setup(){
