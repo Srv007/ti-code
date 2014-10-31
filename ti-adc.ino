@@ -272,7 +272,69 @@ String smart_card(void){
   rfid.println(smart_card_number);
   return smart_card_number;
 }
+//main lock
+int main_lock(void){
+  String user_enter_password;
+  String code=String(12);
+  print_menu("        LOCK    ","1-Manual","2-ID CARD","");
+  a=keylock();
+  switch(a){
+  case '1':
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("ENTER PASSWORD:");
+    lcd.setCursor(0, 1);
+    lcd.print("       ");
+    lcd.setCursor(0, 1);
+    lcd.blink();
+    for  (i=0;i<4;i++){
+      a = keylock();
+      lcd.print("*");
+      user_enter_password.concat(a);	
+    }
+    lcd.noBlink();
+    lcd.setCursor(0, 1);
+    digitalWrite(vibraton_pin,LOW);
+    if ((password.compareTo(user_enter_password))==0){
+      lcd.print("TRUE ");
+    }
+    else{
+      lcd.print("WORNG");
+      delay(1000);
+      digitalWrite(vibraton_pin,LOW);
+      main_lock();
+    }
+    break;
 
+  case '2':
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Swipe Your Card:");
+    code=smart_card();
+    lcd.setCursor(0,1);
+    lcd.print(code);
+    lcd.setCursor(0,1);
+    lcd.print("********");
+    if ((id_card.compareTo(code))==0){
+      lcd.print("TRUE ");
+    }
+    else{
+      lcd.print("WORNG");
+      delay(1000);
+      digitalWrite(vibraton_pin,LOW);
+      main_lock();
+    }
+    break;
+
+  default:
+    main_lock();
+    break;
+  }
+  lcd.clear();
+  digitalWrite(vibraton_pin,LOW);
+  lcd.noBlink();
+  return 0;
+}
 
 
 void setup(){
