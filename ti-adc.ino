@@ -1684,6 +1684,41 @@ out:;
     goto out;
   }
 }
+void function3(void){
+  if(automatic_lock_status==true) get_lock_time();
+  print_menu("1-MAKE CONNECTION","2-DEVICE VERIFICATION","3-function*","4-TURN OFF DEVICE");
+  a = keylock();
+  switch(a){
+  case '1':
+    lcd.clear();
+    connect();
+    break;
+
+  case '2':
+top:
+    device_verification(posturl,"DEVICE VERIFICATION:","device_verification","84");
+    post_result();
+    lcd.print(data[0]);
+    if(data[0][6]=='F'){
+      lcd.clear();
+      get_tte_number();
+      goto top;
+    }
+    break;
+
+  case '3':
+
+    break;
+
+  case '4':
+
+    break;  
+
+  default:
+    function3();
+  }
+  loop();//saurav
+}
 
 
 
