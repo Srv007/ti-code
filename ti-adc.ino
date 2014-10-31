@@ -533,22 +533,6 @@ void query_post(String query_url, String query_statement,String parameter,String
   Serial1.println("User-Agent: ATCAD");
   Serial1.println("Keep-Alive: 300");
   Serial1.println("Connection: keep-alive");
-  Serial1.println("Content-Type: application/x-www-form-urlencoded");
-  Serial1.print("Content-Length: ");
-  Serial1.println(Content_Length);
-  Serial1.println("");
-  Serial1.print("device_number=");
-  Serial1.print(device_number);
-  Serial1.print("&device_tte=");
-  Serial1.print(tte_code);
-  Serial1.print("&request_category=");
-  Serial1.print(request_category);
-  Serial1.print("&");
-  Serial1.print(parameter);
-  Serial1.println("");
-  Serial1.write(10);
-  Serial1.write(26);
-  Serial1.setTimeout(10000);
   while(1){
     if(Serial1.available()) break;
   }
