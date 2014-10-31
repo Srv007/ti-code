@@ -478,7 +478,7 @@ void query_get(String query_url, String query_statement)
   Serial1.println(" HTTP/1.1");
   Serial1.print("HOST:");
   Serial1.println(host);
-  Serial1.println("User-Agent: ATCAD");
+  Serial1.println("User-Agent: none”);
   Serial1.write(10);
   Serial1.write(26);
   delay(4000);
