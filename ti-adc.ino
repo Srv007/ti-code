@@ -705,6 +705,36 @@ void pnr_post_result()
   key();
   loop();
 }
+void post_result()
+{
+  lcd.clear();
+  Serial1.flush();
+  i=0;
+  for(j=0;j<5;j++){
+    for(k=0;k<20;k++){
+      data[j][k]='\0';
+    }
+  }
+  while(i<4){
+    if(Serial1.available()){
+      a=Serial1.read();
+      if (a=='#'){
+        a='x';
+        Serial1.flush();
+        lcd.setCursor(0,i);
+        Serial1.readBytesUntil('*',data[i], 20);//
+        lcd.print(data[i]);
+        i++;
+      }
+      if (a=='$') break;
+    }
+  }
+  delay(700);
+  Serial1.println("");
+  lcd.setCursor(19,3);
+  send_cmd("AT+CIPCLOSE","CLOSE OK",5000);
+  key();
+ }
 
 
 void setup(){
