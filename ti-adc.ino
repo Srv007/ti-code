@@ -446,6 +446,16 @@ void CIICR(void){
     CIICR();
   }
 }
+void CCR(void){
+  delay(100);
+  Serial1.setTimeout(5000);
+  Serial1.println("AT+CIFSR");
+  if(Serial1.find("ERROR")){
+    send_cmd("AT+CIICR","OK",1000); 
+    CIICR();
+  }
+}
+
 void CIPSTART(String host)
 {
   Serial1.flush();
