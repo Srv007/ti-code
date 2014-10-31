@@ -558,6 +558,35 @@ void query_post(String query_url, String query_statement,String parameter,String
     loop();
   }
 }
+void device_verification(String query_url, String query_statement,String request_category,String Content_Length)
+{
+  t=0;
+  Serial1.flush();
+  lcd.clear();
+  Serial1.flush();
+  CIPSTART(host);//remove
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print(query_statement);
+  delay(500);
+  Serial1.println("AT+CIPSEND");
+    delay(800);
+    delay(500);
+  Serial1.print("POST ");
+  Serial1.print(query_url);
+  Serial1.println(" HTTP/1.1");
+  Serial1.print("HOST: ");
+  Serial1.println(host);
+  Serial1.println("User-Agent: ATCAD");
+  Serial1.println("Keep-Alive: 300");
+  Serial1.println("Connection: keep-alive");
+  Serial1.println("Content-Type: application/x-www-form-urlencoded");
+  Serial1.print("Content-Length: ");
+ {
+    send_cmd("AT+CIPCLOSE","CLOSE OK",5000);
+    loop();
+  }
+
 void setup(){
   backlight_status=true;
   pinMode( button1, INPUT_PULLUP); 
