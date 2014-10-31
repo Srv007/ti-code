@@ -735,7 +735,17 @@ void post_result()
   send_cmd("AT+CIPCLOSE","CLOSE OK",5000);
   key();
  }
-
+void print_menu(char *line1,char *line2,char *line3,char *line4){
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print(line1);
+  lcd.setCursor(0,1);
+  lcd.print(line2);//
+  lcd.setCursor(0,2);
+  lcd.print(line3);
+  lcd.setCursor(0,3);
+  lcd.print(line4);
+}
 
 void setup(){
   backlight_status=true;
