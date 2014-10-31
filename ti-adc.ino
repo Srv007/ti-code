@@ -1803,6 +1803,32 @@ lcd.begin( 20, 4);
   backlight_status==true;  
 }
 void loop(){
+i=0;
+main_menu:
+  Serial1.flush();
+  if(i<0) i=5;
+  if(i<4){
+    w=i;
+    x=i+1;
+    y=i+2;
+  }
+  if(i==4){
+    w=i;
+    x=i+1;
+    y=5-5;
+  }
+  if(i==5){
+    w=i;
+    x=5-5;
+    y=5-4;
+  }
+  if(i==6){ 
+    i=0;
+    w=i;
+    x=i+1;
+    y=i+2;
+  }
+
  
 }
 
