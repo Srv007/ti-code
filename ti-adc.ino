@@ -532,7 +532,61 @@ void query_post(String query_url, String query_statement,String parameter,String
   Serial1.println(host);
   Serial1.println("User-Agent: ATCAD");
   Serial1.println("Keep-Alive: 300");
+  Serial1.println("Connection: keep-alive");void query_post(String query_url, String query_statement,String parameter,String request_category,String Content_Length )
+{
+  t=0;
+  Serial1.flush();
+  lcd.clear();
+  CIPSTART(host);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print(query_statement);
+  lcd.setCursor(0,1);
+  for(i=0;i<10;i++){
+    a = keylock();
+    lcd.print(a);
+    parameter.concat(a);	
+  }
+  delay(500);
+  Serial1.println("AT+CIPSEND");
+  delay(500);
+  Serial1.print("POST ");
+  Serial1.print(query_url);
+  Serial1.println(" HTTP/1.1");
+  Serial1.print("HOST: ");
+  Serial1.println(host);
+  Serial1.println("User-Agent: ATCAD");
+  Serial1.println("Keep-Alive: 300");
   Serial1.println("Connection: keep-alive");
+  Serial1.println("Content-Type: application/x-www-form-urlencoded");
+  Serial1.print("Content-Length: ");
+  Serial1.println(Content_Length);
+  Serial1.println("");
+  Serial1.print("device_number=");
+  Serial1.print(device_number);
+  Serial1.print("&device_tte=");
+  Serial1.print(tte_code);
+  Serial1.print("&request_category=");
+  Serial1.print(request_category);
+  Serial1.print("&");
+  Serial1.print(parameter);
+  Serial1.println("");
+  Serial1.write(10);
+  Serial1.write(26);
+  Serial1.setTimeout(10000);
+  while(1){
+    if(Serial1.available()) break;
+  }
+  if(Serial1.find("SEND OK")) lcd.print("Send");
+  else{ 
+    lcd.print("Sending Fail"); 
+    delay(1000); 
+    Serial1.println("");
+    lcd.setCursor(19,3);
+    send_cmd("AT+CIPCLOSE","CLOSE OK",5000);
+    loop();
+  }
+}
   while(1){
     if(Serial1.available()) break;
   }
