@@ -582,7 +582,27 @@ void device_verification(String query_url, String query_statement,String request
   Serial1.println("Connection: keep-alive");
   Serial1.println("Content-Type: application/x-www-form-urlencoded");
   Serial1.print("Content-Length: ");
- {
+  Serial1.println(Content_Length);
+  Serial1.println("");
+  Serial1.print("device_number=");
+  Serial1.print(device_number);
+  Serial1.print("&device_tte=");
+  Serial1.print(tte_code);
+  Serial1.print("&request_category=");
+  Serial1.print(request_category);
+  Serial1.println("");
+  Serial1.write(10);
+  Serial1.write(26);
+  Serial1.setTimeout(20000);
+  while(1){
+    if(Serial1.available()) break;
+  }
+  if(Serial1.find("SEND OK")) lcd.print("Send");
+  else{ 
+    lcd.print("Sending Fail"); 
+    delay(1000); 
+    Serial1.println("");
+    lcd.setCursor(19,3);
     send_cmd("AT+CIPCLOSE","CLOSE OK",5000);
     loop();
   }
