@@ -818,6 +818,10 @@ void smart_card_number(){
   code=smart_card();
   lcd.print(code);
 }
+void ticketanalysis(void){
+  //query_post(posturl,ticketanalysisurl_statement,"station=");
+}
+
 
 void setup(){
   backlight_status=true;
