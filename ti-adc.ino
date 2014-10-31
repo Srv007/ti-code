@@ -338,7 +338,24 @@ int main_lock(void){
 
 /lock function to call any where
 int device_lock(void){
-  
+  if(automatic_lock_status==true) get_lock_time();
+  String user_enter_password;
+  String code=String(12);
+  lcd.clear();
+  lcd.print("        LOCK");
+  delay(500);
+  temp_backlight_status=backlight_status;
+  backlight_status=false;
+  delay(500);
+  lcd.clear();
+  analogWrite(P1_4,0);
+  while(digitalRead(lock_button)==HIGH);
+  lcd.clear();
+  backlight_status=temp_backlight_status;
+  analogWrite(P1_4,244);
+  print_menu("        LOCK    ","1-Manual","2-ID CARD","");
+  delay(500);
+  a=keylock();
   switch(a){
   case '1':
     lcd.clear();
