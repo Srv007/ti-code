@@ -1493,6 +1493,51 @@ void function1(void){
     loop();
   }
 }
+void display_uptime(){
+  if(automatic_lock_status==true) get_lock_time();
+  lcd.clear();
+  while(digitalRead(button1)==HIGH){
+    delay(400);
+    lcd.setCursor(0, 0);
+    lcd.print("Uptime:");
+    time=millis();
+    sec=time/1000;
+    mint=sec/60;
+    hrs=mint/60;
+    mint=mint-(hrs*60);
+    sec=sec-(mint*60);
+    lcd.setCursor(7, 0);
+    lcd.print("            ");
+    lcd.setCursor(7, 0);
+    lcd.print(hrs);
+    lcd.print(":");
+    lcd.print(mint);
+    lcd.print(":");
+    lcd.print(sec);
+    lcd.setCursor(0, 1);
+    lcd.print("Real Time:");
+    lcd.setCursor(10, 1);
+    lcd.print("            ");
+    lcd.setCursor(10, 1);
+    lcd.print(hrs+real_hrs);
+    lcd.print(":");
+    lcd.print(mint+real_mint);
+    lcd.print(":");
+    lcd.print(sec+real_sec);
+    lcd.setCursor(0, 2);
+    if(alarm_status==true){
+      lcd.print("Alarm Time:");
+      lcd.print(alarm_time/3600);
+      lcd.print(":");
+      lcd.print((alarm_time/60)-60*(alarm_time/3600));
+    }
+    else
+      lcd.print("Alarm Time:NO ALARM");
+
+  }
+  delay(100);
+  function1();
+}
 
 
 
