@@ -668,6 +668,44 @@ void query_smart_post(String query_url, String query_statement,String parameter,
     loop();
   }
 }
+void pnr_post_result()
+{
+  Serial1.flush();
+  Serial1.setTimeout(5000);
+  lcd.clear();
+  Serial1.flush();
+  i=0;
+  for(j=0;j<5;j++){
+    for(k=0;k<20;k++){
+      data[j][k]='\0';
+    }
+  }
+  while(i<4){
+    if(Serial1.available()){
+      a=Serial1.read();
+      if (a=='#'){
+        a='x';
+        Serial1.flush();
+        lcd.setCursor(0,i);
+        Serial1.readBytesUntil('*',data[i], 20);//
+        for(k=0;k<20;k++){
+          pnrdata[current_pnr_no][i][k]=data[i][k];
+          lcd.print(pnrdata[current_pnr_no][i][k]);
+        }
+        i++;
+      }
+      if (a=='$') break;
+    }
+  }
+  delay(1000);
+  Serial1.println("");
+  lcd.setCursor(19,3);
+  send_cmd("AT+CIPCLOSE","CLOSE OK",5000);
+  current_pnr_no++;
+  key();
+  loop();
+}
+
 
 void setup(){
   backlight_status=true;
