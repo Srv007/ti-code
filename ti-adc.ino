@@ -809,6 +809,15 @@ pnr_query:
     goto pnr_query;
   }
 }
+void smart_card_number(){
+  String code=String(12);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("SWIPE CARD");
+  lcd.setCursor(0,1);
+  code=smart_card();
+  lcd.print(code);
+}
 
 void setup(){
   backlight_status=true;
