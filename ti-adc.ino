@@ -1719,6 +1719,30 @@ top:
   }
   loop();//saurav
 }
+void connect(){
+ // Serial1.println("ATE0");
+  lcd.setCursor(0,3);
+  delay(1000);
+  lcd.print("Connecting");
+  send_cmd("AT+CGATT=1","OK",3000);
+  delay(1000);
+  lcd.print("*");
+  send_cmd("AT+CGDCONT=1,\"IP\",\"INTERNET\"","OK",5000);
+  delay(2000);
+  send_cmd("AT+CSTT=\"INTERNET\",\"\",\"\"","OK",5000);
+  delay(1000);
+  send_cmd("AT+CIICR","OK",5000);
+  lcd.print("*");
+  CIICR();
+  delay(1000);
+  send_cmd("AT+CIPHEAD=1","OK",5000);
+  lcd.print("*");
+  delay(500);
+  lcd.clear();
+  lcd.print("Connected");
+  delay(500);
+  return;
+}
 
 
 
