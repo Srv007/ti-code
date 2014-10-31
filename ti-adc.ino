@@ -1538,7 +1538,20 @@ void display_uptime(){
   delay(100);
   function1();
 }
-
+void internal_temp(void){
+  if(automatic_lock_status==true) get_lock_time();
+  print_menu("Internal Temp","Cel:","Cel:","Cel:");
+  while(digitalRead(button1)==HIGH){
+    temp=analogRead(TEMPSENSOR);
+    temp=(temp*1.5)/4095;
+    temp=(temp-.70)*100/.225;
+    lcd.setCursor(4,1);
+    lcd.print("    ");
+    lcd.setCursor(4,1);
+    lcd.print(temp);
+    delay(500);
+  }
+}
 
 
 void setup(){
