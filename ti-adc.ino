@@ -33,6 +33,21 @@ int Keypad_int[4] [4] = {
   0 , 9 , 6 ,  3,
   0 , 8 , 5 ,  2,
   0 , 7 , 4 ,  1    }; 
+LiquidCrystal lcd(P2_2, P3_0, P3_1, P2_6, P2_3, P8_1); //LCD pin Configuration
+
+char pnrdata[40][4][20]; //storage for pnr numbers history
+int current_pnr_no=0;
+char ttedata[40][20]; //storage for pnr numbers history
+int current_tte_no=0;
+char data[4][30];
+//post request 
+String tteurl_statement="Enter TTE CODE:";
+String pnrurl_statement="Enter PNR CODE:";
+String ticketanalysisurl_statement="ENTER STATION CODE:";
+String tteurl="/srv.php?ttecode=";
+String posturl="/atcad_handler.php";
+String host="www.ti-atcad.com";
+
 void setup(){
   backlight_status=true;
   pinMode( button1, INPUT_PULLUP); 
