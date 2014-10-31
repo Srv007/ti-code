@@ -558,6 +558,7 @@ void query_post(String query_url, String query_statement,String parameter,String
     loop();
   }
 }
+
 void device_verification(String query_url, String query_statement,String request_category,String Content_Length)
 {
   t=0;
@@ -606,6 +607,8 @@ void device_verification(String query_url, String query_statement,String request
     send_cmd("AT+CIPCLOSE","CLOSE OK",5000);
     loop();
   }
+}
+
 void query_smart_post(String query_url, String query_statement,String parameter,String request_category,String Content_Length)
 {
   Serial1.flush();
@@ -668,6 +671,7 @@ void query_smart_post(String query_url, String query_statement,String parameter,
     loop();
   }
 }
+
 void pnr_post_result()
 {
   Serial1.flush();
@@ -705,6 +709,7 @@ void pnr_post_result()
   key();
   loop();
 }
+
 void post_result()
 {
   lcd.clear();
@@ -735,6 +740,7 @@ void post_result()
   send_cmd("AT+CIPCLOSE","CLOSE OK",5000);
   key();
  }
+
 void print_menu(char *line1,char *line2,char *line3,char *line4){
   lcd.clear();
   lcd.setCursor(0,0);
@@ -809,6 +815,7 @@ pnr_query:
     goto pnr_query;
   }
 }
+
 void smart_card_number(){
   String code=String(12);
   lcd.clear();
@@ -818,9 +825,11 @@ void smart_card_number(){
   code=smart_card();
   lcd.print(code);
 }
+
 void ticketanalysis(void){
   //query_post(posturl,ticketanalysisurl_statement,"station=");
 }
+
 void settings(void){
   i=0;
   char setting_menu[][20]={
@@ -916,6 +925,188 @@ setting_menu:
     goto setting_menu;
   }
   return;
+}
+
+void backlight_settings(void){
+  boolean backlight_settings=true;
+  if(automatic_lock_status==true) get_lock_time();
+  char press;
+  print_menu("BACKLIGHT SETTINGS:","1-AUTOMATIC","2-MANUAL","");
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print("OK"); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print(" "); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.print("CANCEL"); 
+  lcd.write(2); 
+  lcd.write(2);
+backlight_settings: 
+  if(automatic_lock_status==true) get_lock_time();
+  if(backlight_settings==true){
+    lcd.setCursor(19,2);
+    lcd.print(" ");
+    lcd.setCursor(19,1);
+    lcd.write(3);
+  }
+  else{
+    lcd.setCursor(19,1);
+    lcd.print(" ");
+    lcd.setCursor(19,2);
+    lcd.write(3);
+  }
+  a=key();
+  switch(a){
+  case 'A':
+    backlight_settings=true;
+    goto backlight_settings;
+
+  case 'B':
+    backlight_settings=false;
+    goto backlight_settings;
+
+  case 'C':
+    switch(backlight_settings){
+    case true:
+      automatic_bacllight_setting();
+      break;
+
+    case false:
+      manual_backlight_setting();
+      break;
+    }
+    break;
+
+  case 'D':
+    settings();
+    break;
+
+  default:
+    goto backlight_settings;
+  }
+}
+
+int automatic_bacllight_setting(void){
+  boolean automatic_bacllight_setting=true;
+  print_menu("AUTOMATIC BACKLIGHT:","1-OFF","2-ON","");
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print("OK"); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print(" "); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.print("CANCEL"); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+automatic_bacllight_setting: 
+  if(automatic_lock_status==true) get_lock_time();
+  if(automatic_bacllight_setting==true){
+    lcd.setCursor(19,2);
+    lcd.print(" ");
+    lcd.setCursor(19,1);
+    lcd.write(3);
+  }
+  else{
+    lcd.setCursor(19,1);
+    lcd.print(" ");
+    lcd.setCursor(19,2);
+    lcd.write(3);
+  }
+  a=key();
+  switch(a){
+  case 'A':
+    automatic_bacllight_setting=true;
+    goto automatic_bacllight_setting;
+
+  case 'B':
+    automatic_bacllight_setting=false;
+    goto automatic_bacllight_setting;
+
+  case 'C':
+    lcd.clear();
+    switch(automatic_bacllight_setting){
+    case true:
+      print_menu("AUTOMATIC BACKLIGHT:","AUTOMATIC BACKLIGHT:OFF","","");
+      backlight_status=false;
+      break;
+
+    case false:
+      print_menu("AUTOMATIC BACKLIGHT:","AUTOMATIC BACKLIGHT:ON","","");
+      backlight_status=true;
+      break;
+    }
+    delay(1000);
+    break;
+
+  case 'D':
+    backlight_settings();
+    break;
+
+  default:
+    goto automatic_bacllight_setting;
+  }
+  loop();
+}  
+
+void manual_backlight_setting(void){
+  if(automatic_lock_status==true) get_lock_time();
+  lcd_backlight_value=0;//verma
+  char press;
+  print_menu("MANUAL BACKLIGHT:","Value:","","");
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print("OK"); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print(" "); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.print("CANCEL"); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+  backlight_status=false;
+  while(1){
+    press=keypress();
+    lcd.setCursor(6,1);
+    if(press=='A'){
+      lcd_backlight_value++;
+      if(lcd_backlight_value>250) lcd_backlight_value=255;
+      lcd.print(lcd_backlight_value);
+      analogWrite(P1_4,lcd_backlight_value);
+    }
+    if(press=='B'){
+      lcd_backlight_value--;
+      if (lcd_backlight_value<0) lcd_backlight_value=0;
+      lcd.print(lcd_backlight_value);
+      lcd.print("  ");
+      analogWrite(P1_4,lcd_backlight_value);
+    }
+
+    if(press=='C'){
+      loop();
+      break;
+    }
+
+    if(press=='D'){
+      backlight_settings();
+      break;
+    }
+  }
 }
 
 
