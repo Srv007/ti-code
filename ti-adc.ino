@@ -1184,6 +1184,11 @@ automatic_lock_settings:
   }
   loop();
 }
+void get_lock_time(){
+  time=millis();// put your main code here, to run repeatedly:
+  sec=time/1000;
+  lock_time_sec=sec+locktime*60;///saurav
+}
 
 
 void setup(){
