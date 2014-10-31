@@ -21,7 +21,18 @@ const int column[] = {
   P4_1,P4_2,P2_7,P3_2};
 const int row[] = {
   P6_6, P1_6, P1_2, P1_3};
+//keypad number control:
+char Keypad[4] [4] = {  
+  'D' , 'C' , 'B' , 'A',
+  '#' , '9' , '6' , '3',
+  '0' , '8' , '5' ,' 2',
+  '*' , '7' , '4' , '1'   };  
 
+int Keypad_int[4] [4] = {  
+  0 , 0 , 0 ,  0,
+  0 , 9 , 6 ,  3,
+  0 , 8 , 5 ,  2,
+  0 , 7 , 4 ,  1    }; 
 void setup(){
   backlight_status=true;
   pinMode( button1, INPUT_PULLUP); 
