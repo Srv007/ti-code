@@ -110,6 +110,36 @@ byte arrow[8] = {
   0b00011 
 };
 
+void automatic_bacllight(void){
+  if(automatic_lock_status==true){
+    lock_time=millis();
+    lock_sec=lock_time/1000;
+    if(lock_sec>lock_time_sec) device_lock();//saurav
+  }
+
+  if(backlight_status==true){
+    lcd_backlight_value=analogRead(A3);
+    lcd_backlight_value=lcd_backlight_value/12;
+    lcd_backlight_value=255-lcd_backlight_value;
+    if(lcd_backlight_value<0) lcd_backlight_value=0;
+    if(backlight_value<lcd_backlight_value) analogWrite(P1_4,backlight_value++);
+    if(backlight_value>lcd_backlight_value) analogWrite(P1_4,backlight_value--);
+  }
+  //check alarm status and turn on alarm if time is over
+  if(alarm_status==true){
+    time=millis();// put your main code here, to run repeatedly:
+    time=time/1000;
+    if(time>alarm_time){
+      TwoMsTimer::stop();
+      lcd.clear();
+      lcd.print("ALARM is on");
+      key();
+      alarm_status=false;
+      TwoMsTimer::start();
+    }
+  }
+} //end of automatic
+s
 
 
 void setup(){
