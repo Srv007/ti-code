@@ -1048,6 +1048,55 @@ automatic_bacllight_setting:
   }
   loop();
 }  
+void manual_backlight_setting(void){
+  if(automatic_lock_status==true) get_lock_time();
+  lcd_backlight_value=0;//verma
+  char press;
+  print_menu("MANUAL BACKLIGHT:","Value:","","");
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print("OK"); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print(" "); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.print("CANCEL"); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+  backlight_status=false;
+  while(1){
+    press=keypress();
+    lcd.setCursor(6,1);
+    if(press=='A'){
+      lcd_backlight_value++;
+      if(lcd_backlight_value>250) lcd_backlight_value=255;
+      lcd.print(lcd_backlight_value);
+      analogWrite(P1_4,lcd_backlight_value);
+    }
+    if(press=='B'){
+      lcd_backlight_value--;
+      if (lcd_backlight_value<0) lcd_backlight_value=0;
+      lcd.print(lcd_backlight_value);
+      lcd.print("  ");
+      analogWrite(P1_4,lcd_backlight_value);
+    }
+
+    if(press=='C'){
+      loop();
+      break;
+    }
+
+    if(press=='D'){
+      backlight_settings();
+      break;
+    }
+  }
+}
 
 
 
