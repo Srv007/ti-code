@@ -1268,6 +1268,231 @@ vibration_settings:
   }
   loop();
 }
+void time_settings(void){
+  i=0;
+  char time_settings_menu[][20]={
+    "1-Set Current Time","2-Set Alarm","3-Cancel Alarm","4-Request For Time"                      };
+time_settings:
+  Serial1.flush();
+  if(i==4) i=0;
+  if(i>4) i=3;
+  if(i<2){
+    w=i;
+    x=i+1;
+    y=i+2;
+  }
+  if(i==2){
+    w=i;
+    x=i+1;
+    y=0;
+  }
+  if(i==3){
+    w=i;
+    x=0;
+    y=1;
+  }
+  if(i==4) i=0;
+
+  print_menu(time_settings_menu[w],time_settings_menu[x],time_settings_menu[y],"");
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print("OK"); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.print(" "); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.print("CANCEL"); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+  lcd.setCursor(19,0);
+  lcd.write(3); 
+  if(automatic_lock_status==true) get_lock_time();
+  a = key();
+  switch(a){
+
+  case 'C':
+    switch(i+1){
+    case 1:
+      set_time();
+      break;
+
+    case 2:
+      set_alarm();
+      break;
+
+    case 3:
+      lcd.clear(); 
+      if(alarm_status==true)  lcd.print("Alarm :Disable");
+      if(alarm_status==false){ 
+        lcd.print("Alarm :No Alarm"); 
+        alarm_status=false;
+      }
+      delay(1000);
+      break;
+
+    case 4:
+      break;
+    }
+    break;
+
+  case 'A':
+    i=i-1;  
+    goto time_settings;
+    break;
+
+  case 'B':
+    i=i+1;
+    goto time_settings;
+    break;
+
+  case 'D':
+    settings();
+    break;
+
+  default:
+    goto time_settings;
+  }
+  loop();
+} 
+void set_time(void){
+  if(automatic_lock_status==true) get_lock_time();
+  lcd.clear();
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+  lcd.print("SET TIME");
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+  int x,y;
+  lcd.print("Enter Hours:");
+  lcd.blink();
+  x=keypress_int();
+  lcd.print(x);
+  y=keypress_int();
+  lcd.print(y);
+  lcd.noBlink();
+  real_hrs=x*10+y;
+  lcd.setCursor(0,1);
+  lcd.print("Enter Min:");
+  lcd.blink();
+  x=keypress_int();
+  lcd.print(x);
+  y=keypress_int();
+  lcd.print(y);
+  lcd.noBlink();
+  real_mint=x*10+y;
+  lcd.setCursor(0,2);
+  lcd.print("Enter Sec:");
+  lcd.blink();
+  x=keypress_int();
+  lcd.print(x);
+  y=keypress_int();
+  lcd.print(y);
+  lcd.noBlink();
+  time=millis();
+  sec=time/1000;
+  mint=sec/60;
+  hrs=mint/60;
+  mint=mint-(hrs*60);
+  sec=sec-(mint*60);
+  real_sec=x*10+y;
+  real_sec=real_sec-sec;
+  real_hrs=real_hrs-hrs;
+  real_mint=real_mint-mint;
+  delay(1000);
+}
+
+void set_alarm(void){
+  if(automatic_lock_status==true) get_lock_time();
+  x,y;
+  lcd.clear();
+  lcd.setCursor(0,3); 
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+  lcd.print("SET ALARM");
+  lcd.write(2); 
+  lcd.write(2);  
+  lcd.write(2); 
+  lcd.write(2); 
+  lcd.write(2);
+  lcd.write(2);
+  lcd.print("Enter Hours:");
+  lcd.blink();
+  x=keypress_int();
+  lcd.print(x);
+  y=keypress_int();
+  lcd.print(y);
+  lcd.noBlink();
+  alarm_hrs=x*10+y;
+  lcd.setCursor(0,1);
+  lcd.print("Enter Min:");
+  lcd.blink();
+  x=keypress_int();
+  lcd.print(x);
+  y=keypress_int();
+  lcd.print(y);
+  lcd.noBlink();
+  alarm_mint=x*10+y;
+  lcd.setCursor(0,2);
+  lcd.print("Enter Sec:");
+  lcd.blink();
+  x=keypress_int();
+  lcd.print(x);
+  y=keypress_int();
+  lcd.print(y);
+  alarm_sec=x*10+y;
+  lcd.noBlink();
+  time=millis();
+  alarm_time=alarm_sec+alarm_mint*60+alarm_hrs*3600;
+  alarm_time=alarm_time+time/1000;
+  alarm_status=true;
+  delay(500);
+  return;
+}
+
+void function1(void){
+  if(automatic_lock_status==true) get_lock_time();
+  delay(300);
+  print_menu("CUP Details","1-CPU Uptime","2-CPU Temperature","3-pta nhi");
+  a = keylock();
+  switch(a){
+  case '1':
+    display_uptime();
+    break;
+
+  case '2':
+    internal_temp(); 
+    break;
+
+  case '3':
+    //settings();
+    break;
+
+  case '4':
+    //tte_login_logout();
+    break; 
+
+  default:
+    loop();
+  }
+}
 
 
 
