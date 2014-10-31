@@ -1108,6 +1108,7 @@ void manual_backlight_setting(void){
     }
   }
 }
+
 void automatic_lock_settings(){
   if(automatic_lock_status==true) get_lock_time();
   boolean automatic_lock_settings=true;
@@ -1184,11 +1185,13 @@ automatic_lock_settings:
   }
   loop();
 }
+
 void get_lock_time(){
   time=millis();// put your main code here, to run repeatedly:
   sec=time/1000;
   lock_time_sec=sec+locktime*60;///saurav
 }
+
 void vibration_settings(void){
   boolean vibration_settings=true;
   if(automatic_lock_status==true) get_lock_time();
@@ -1268,6 +1271,7 @@ vibration_settings:
   }
   loop();
 }
+
 void time_settings(void){
   i=0;
   char time_settings_menu[][20]={
@@ -1493,6 +1497,7 @@ void function1(void){
     loop();
   }
 }
+
 void display_uptime(){
   if(automatic_lock_status==true) get_lock_time();
   lcd.clear();
@@ -1538,6 +1543,7 @@ void display_uptime(){
   delay(100);
   function1();
 }
+
 void internal_temp(void){
   if(automatic_lock_status==true) get_lock_time();
   print_menu("Internal Temp","Cel:","Cel:","Cel:");
@@ -1552,6 +1558,7 @@ void internal_temp(void){
     delay(500);
   }
 }
+
 void function2(void){
   if(automatic_lock_status==true) get_lock_time();
   delay(500);
@@ -1579,6 +1586,7 @@ void function2(void){
   }
   loop();
 }
+
 void display_pnr_history(void){
   if(automatic_lock_status==true) get_lock_time();
   delay(200);
@@ -1651,6 +1659,7 @@ out:;
     goto out;
   }
 }
+
 void display_tte_history(void){
   if(automatic_lock_status==true) get_lock_time();
   delay(200);
@@ -1684,6 +1693,7 @@ out:;
     goto out;
   }
 }
+
 void function3(void){
   if(automatic_lock_status==true) get_lock_time();
   print_menu("1-MAKE CONNECTION","2-DEVICE VERIFICATION","3-function*","4-TURN OFF DEVICE");
@@ -1719,6 +1729,7 @@ top:
   }
   loop();//saurav
 }
+
 void connect(){
  // Serial1.println("ATE0");
   lcd.setCursor(0,3);
@@ -1759,7 +1770,7 @@ void get_tte_number(){
 }
 
 void setup(){
-lcd.begin( 20, 4);
+  lcd.begin( 20, 4);
   lcd.clear();
   for(i=0;i<40;i++){
     for(j=0;j<4;j++){
@@ -1800,10 +1811,10 @@ lcd.begin( 20, 4);
   key();
   lcd.createChar(2, black);
   lcd.createChar(3, arrow);
-  backlight_status==true;  
+  backlight_status==true;
 }
 void loop(){
-i=0;
+  i=0;
 main_menu:
   Serial1.flush();
   if(i<0) i=5;
@@ -1828,6 +1839,7 @@ main_menu:
     x=i+1;
     y=i+2;
   }
+
   print_menu(menu[w],menu[x],menu[y],"");
   lcd.setCursor(0,3); 
   lcd.write(2); 
@@ -1848,8 +1860,50 @@ main_menu:
   lcd.write(3); 
   if(automatic_lock_status==true) get_lock_time();
   a = key();
+  switch(a){
 
- 
+  case 'C':
+    switch(i+1){
+    case 1:
+      pnr_query();
+      pnr_post_result();
+      break;
+
+    case 2:
+      device_verification(posturl,"CURRENT ASSIGNMENT:","assignment","75");
+      post_result();
+      break;
+
+    case 3:
+      settings();
+      break;
+
+    case 4:
+      //tte_login_logout();
+      break;
+
+    case 5:
+      break;
+
+    case 6:
+      break;
+    }
+    break;
+
+  case 'A':
+    i=i-1;  
+    goto main_menu;
+    break;
+
+  case 'B':
+    i=i+1;
+    goto main_menu;
+    break;
+
+
+  default:
+    goto main_menu;
+  }
 }
 
 
