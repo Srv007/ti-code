@@ -1552,6 +1552,33 @@ void internal_temp(void){
     delay(500);
   }
 }
+void function2(void){
+  if(automatic_lock_status==true) get_lock_time();
+  delay(500);
+  print_menu("1-PNR History","1-TTE History","","");
+  a=keylock();
+  switch(a){
+  case '1':
+    display_pnr_history();
+    break;
+
+  case '2':
+    display_tte_history(); 
+    break;
+
+  case '3':
+    //settings();
+    break;
+
+  case '4':
+    //tte_login_logout();
+    break; 
+
+  default:
+    loop();
+  }
+  loop();
+}
 
 
 void setup(){
