@@ -1,3 +1,4 @@
+
 #include <TwoMsTimer.h>
 #include <SoftwareSerial.h>
 #include <LiquidCrystal.h>
@@ -21,6 +22,7 @@ const int column[] = {
   P4_1,P4_2,P2_7,P3_2};
 const int row[] = {
   P6_6, P1_6, P1_2, P1_3};
+
 //keypad number control:
 char Keypad[4] [4] = {  
   'D' , 'C' , 'B' , 'A',
@@ -32,7 +34,8 @@ int Keypad_int[4] [4] = {
   0 , 0 , 0 ,  0,
   0 , 9 , 6 ,  3,
   0 , 8 , 5 ,  2,
-  0 , 7 , 4 ,  1    }; 
+  0 , 7 , 4 ,  1    };    
+
 LiquidCrystal lcd(P2_2, P3_0, P3_1, P2_6, P2_3, P8_1); //LCD pin Configuration
 
 char pnrdata[40][4][20]; //storage for pnr numbers history
@@ -48,7 +51,8 @@ String tteurl="/srv.php?ttecode=";
 String posturl="/atcad_handler.php";
 String host="www.ti-atcad.com";
 
-/gobel variables
+
+//gobel variables
 int lcd_backlight_value;                       // lcd_backlight_value value of light sensor
 int backlight_value;  
 boolean backlight_status;     // backlight status
@@ -108,7 +112,7 @@ byte arrow[8] = {
   0b01100,
   0b00110,
   0b00011 
-};
+}; 
 
 void automatic_bacllight(void){
   if(automatic_lock_status==true){
@@ -139,6 +143,7 @@ void automatic_bacllight(void){
     }
   }
 } //end of automatic
+
 //return button press on keypad in integer
 int keypress_int() {
   int keypress;
@@ -167,6 +172,7 @@ out:;
   digitalWrite(vibraton_pin,LOW);
   return keypress;
 }
+
 char keypress() {
   char keypress;
   for (x=0; x<4; x++)  {
@@ -193,6 +199,8 @@ out:;
   digitalWrite(vibraton_pin,LOW);
   return keypress;
 }//  end of keypress_int()
+
+//this function for using any where for keypad
 char key(){
   char keypress;
   for (x=0; x<4; x++)  {
@@ -226,6 +234,7 @@ out:;
   digitalWrite(vibraton_pin,LOW);
   return keypress;
 }
+
 char keylock() {
   char keypress;
   for (x=0; x<4; x++)  {
@@ -272,6 +281,7 @@ String smart_card(void){
   rfid.println(smart_card_number);
   return smart_card_number;
 }
+
 //main lock
 int main_lock(void){
   String user_enter_password;
@@ -335,8 +345,7 @@ int main_lock(void){
   lcd.noBlink();
   return 0;
 }
-
-/lock function to call any where
+//lock function to call any where
 int device_lock(void){
   if(automatic_lock_status==true) get_lock_time();
   String user_enter_password;
@@ -430,12 +439,6 @@ void send_cmd(String cmd,char *response,int wait){
   }
   if(Serial1.find(response)) lcd.print("*");
 }
-  Serial1.setTimeout(wait); 
-  while(1){
-    if(Serial1.available())  break;
-  }
-  if(Serial1.find(response)) lcd.print("*");
-}
 
 void CIICR(void){
   delay(100);
@@ -445,43 +448,6 @@ void CIICR(void){
     send_cmd("AT+CIICR","OK",1000); 
     CIICR();
   }
-}
-void CCR(void){
-  delay(100);
-  Serial1.setTimeout(5000);
-  Serial1.println("AT+CIFSR");
-  if(Serial1.find("ERROR")){
-    send_cmd("AT+CIICR","OK",1000); 
-    CIICR();
-  }
-}
-void query_get(String query_url, String query_statement)
-{
-  Serial1.flush();
-  lcd.clear();
-  t=0;
-  String parameter(10);
-  lcd.setCursor(0,0);
-  lcd.print(query_statement);
-  lcd.setCursor(0,1);
-  for(i=0;i<10;i++){
-    a = keylock();
-    lcd.print(a);
-    parameter.concat(a);	
-  }
-  CIPSTART(host);
-  Serial1.println("AT+CIPSEND");
-  delay(500);
-  Serial1.print("GET ");
-  Serial1.print(query_url);
-  Serial1.print(parameter);
-  Serial1.println(" HTTP/1.1");
-  Serial1.print("HOST:");
-  Serial1.println(host);
-  Serial1.println("User-Agent: none”);
-  Serial1.write(10);
-  Serial1.write(26);
-  delay(4000);
 }
 
 void CIPSTART(String host)
@@ -506,7 +472,37 @@ void CIPSTART(String host)
     lcd.print("NOT CONNECTED");
     CIPSTART(host);
   }
-}//
+}
+
+void query_get(String query_url, String query_statement)
+{
+  Serial1.flush();
+  lcd.clear();
+  t=0;
+  String parameter(10);
+  lcd.setCursor(0,0);
+  lcd.print(query_statement);
+  lcd.setCursor(0,1);
+  for(i=0;i<10;i++){
+    a = keylock();
+    lcd.print(a);
+    parameter.concat(a);	
+  }
+  CIPSTART(host);
+  Serial1.println("AT+CIPSEND");
+  delay(500);
+  Serial1.print("GET ");
+  Serial1.print(query_url);
+  Serial1.print(parameter);
+  Serial1.println(" HTTP/1.1");
+  Serial1.print("HOST:");
+  Serial1.println(host);
+  Serial1.println("User-Agent: ATCAD");
+  Serial1.write(10);
+  Serial1.write(26);
+  delay(4000);
+}
+
 void query_post(String query_url, String query_statement,String parameter,String request_category,String Content_Length )
 {
   t=0;
@@ -533,6 +529,22 @@ void query_post(String query_url, String query_statement,String parameter,String
   Serial1.println("User-Agent: ATCAD");
   Serial1.println("Keep-Alive: 300");
   Serial1.println("Connection: keep-alive");
+  Serial1.println("Content-Type: application/x-www-form-urlencoded");
+  Serial1.print("Content-Length: ");
+  Serial1.println(Content_Length);
+  Serial1.println("");
+  Serial1.print("device_number=");
+  Serial1.print(device_number);
+  Serial1.print("&device_tte=");
+  Serial1.print(tte_code);
+  Serial1.print("&request_category=");
+  Serial1.print(request_category);
+  Serial1.print("&");
+  Serial1.print(parameter);
+  Serial1.println("");
+  Serial1.write(10);
+  Serial1.write(26);
+  Serial1.setTimeout(10000);
   while(1){
     if(Serial1.available()) break;
   }
@@ -546,7 +558,6 @@ void query_post(String query_url, String query_statement,String parameter,String
     loop();
   }
 }
-
 void setup(){
   backlight_status=true;
   pinMode( button1, INPUT_PULLUP); 
