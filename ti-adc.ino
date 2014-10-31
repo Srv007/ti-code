@@ -446,7 +446,18 @@ void CIICR(void){
     CIICR();
   }
 }
-
+void CIPSTART(String host)
+{
+  Serial1.flush();
+  Serial1.print("AT+CIPSTART=\"TCP\",\"");
+  Serial1.print(host);
+  Serial1.println("\",\"80\"");
+  Serial1.find("OK");
+  Serial1.setTimeout(8000);
+  while(1){
+    if(Serial1.available()) break;
+  }
+}
 
 void setup(){
   backlight_status=true;
