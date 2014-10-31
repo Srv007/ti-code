@@ -455,6 +455,34 @@ void CCR(void){
     CIICR();
   }
 }
+void query_get(String query_url, String query_statement)
+{
+  Serial1.flush();
+  lcd.clear();
+  t=0;
+  String parameter(10);
+  lcd.setCursor(0,0);
+  lcd.print(query_statement);
+  lcd.setCursor(0,1);
+  for(i=0;i<10;i++){
+    a = keylock();
+    lcd.print(a);
+    parameter.concat(a);	
+  }
+  CIPSTART(host);
+  Serial1.println("AT+CIPSEND");
+  delay(500);
+  Serial1.print("GET ");
+  Serial1.print(query_url);
+  Serial1.print(parameter);
+  Serial1.println(" HTTP/1.1");
+  Serial1.print("HOST:");
+  Serial1.println(host);
+  Serial1.println("User-Agent: ATCAD");
+  Serial1.write(10);
+  Serial1.write(26);
+  delay(4000);
+}
 
 void CIPSTART(String host)
 {
