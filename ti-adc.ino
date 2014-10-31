@@ -419,11 +419,7 @@ int device_lock(void){
 }
 void send_cmd(String cmd,char *response,int wait){
   delay(100);
-  Serial1.flush();
-  Serial1.println(" ");
-  delay(10);
-  Serial1.println(cmd);
-  Serial1.println(" ");
+
   Serial1.setTimeout(wait); 
   while(1){
     if(Serial1.available())  break;
