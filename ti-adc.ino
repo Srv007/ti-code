@@ -48,6 +48,43 @@ String tteurl="/srv.php?ttecode=";
 String posturl="/atcad_handler.php";
 String host="www.ti-atcad.com";
 
+/gobel variables
+int lcd_backlight_value;                       // lcd_backlight_value value of light sensor
+int backlight_value;  
+boolean backlight_status;     // backlight status
+boolean temp_backlight_status;     // backlight status
+boolean vibration_status;     // backlight status
+String id_card="4E00707BD590";//id card number of tte for unlock device
+String password=("1234");
+char device_number[]="SLVE_9856"; //This is device number//9856 is password
+char tte_code[12];
+//globle variables for Device Uptime
+unsigned long time;
+unsigned long sec;
+unsigned long mint;
+unsigned long hrs;
+//Globle Variables for real time dislay
+int real_sec;
+int real_mint;
+int real_hrs;
+//
+unsigned long alarm_time;//store alarm sec
+unsigned long alarm_sec; //
+unsigned long alarm_mint;
+unsigned long alarm_hrs;
+boolean alarm_status=false;
+boolean automatic_lock_status=false;
+unsigned long lock_time;
+unsigned long lock_sec;
+int lock_time_sec;//saurav
+int locktime;
+char a;
+int i,j,k,t,w,x,y;
+float temp;
+
+
+
+
 void setup(){
   backlight_status=true;
   pinMode( button1, INPUT_PULLUP); 
